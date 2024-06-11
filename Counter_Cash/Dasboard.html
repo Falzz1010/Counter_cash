@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="dist/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <title>Dashboard</title>
+    <style>
+        
+        body,
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .sidebar-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-menu.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Tambahkan perbaikan CSS di sini */
+        .sidebar-menu.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-dropdown-toggle.active .ri-arrow-right-s-line {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-dropdown-toggle.selected .ri-arrow-right-s-line {
+            transform: rotate(90deg);
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-menu {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay {
+                display: none;
+            }
+
+            .main {
+                width: calc(100% - 16rem);
+                margin-left: 16rem;
+            }
+
+            .p-6 {
+                padding: 2rem;
+            }
+        }
+    </style>
+
+    <!-- Summary Card -->
+    <style>
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        .md\:grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .my-8 {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .bg-gradient-to-r {
+            background-image: linear-gradient(to right, var(--tw-gradient-stops));
+        }
+
+        .from-green-400 {
+            --tw-gradient-from: #34d399;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(52, 211, 153, 0));
+        }
+
+        .to-blue-500 {
+            --tw-gradient-to: #3b82f6;
+        }
+
+        .from-red-400 {
+            --tw-gradient-from: #f87171;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(248, 113, 113, 0));
+        }
+
+        .to-pink-500 {
+            --tw-gradient-to: #ec4899;
+        }
+
+        .from-yellow-400 {
+            --tw-gradient-from: #fbbf24;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(251, 191, 36, 0));
+        }
+
+        .to-orange-500 {
+            --tw-gradient-to: #f97316;
+        }
+
+        .text-white {
+            color: #ffffff;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .rounded-lg {
+            border-radius: 0.75rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-4xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-cols-1 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .grid-cols-1 {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr); 
+            }
+        }
+    </style>
+    <!-- Summary Card -->
+
+    <style>
+        /* Styles for the table and its elements */
+        .mt-8 {
+            margin-top: 2rem;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        .shadow-md {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+
+        .min-w-full {
+            min-width: 100%;
+        }
+
+        .bg-gray-50 {
+            background-color: #f9fafb;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .border-b-2 {
+            border-bottom-width: 2px;
+        }
+
+        .border-gray-200 {
+            border-color: #edf2f7;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-gray-600 {
+            color: #718096;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .divide-y> :not([hidden])~ :not([hidden]) {
+            border-top-width: 1px;
+        }
+
+        .divide-gray-200 {
+            --tw-divide-opacity: 1;
+            border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
+        }
+
+        /* Hover effect for table rows */
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .py-3 {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .px-4 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .text-xl {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+
+            .py-3 {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .px-4 {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            .table-responsive th:nth-child(2),
+            .table-responsive td:nth-child(2) {
+                display: none;
+            }
+        }
+
+        /* Hide charts on mobile devices */
+        @media (max-width: 768px) {
+            .chart-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 font-inter">
+    <!-- start: Sidebar -->
+    <div class="fixed left-0 top-0 w-64 h-full bg-gray-900 p-4 z-50 sidebar-menu transition-transform">
+        <a href="#" class="flex items-center pb-4 border-b border-b-gray-800">
+            <span class="text-lg font-bold text-white ml-3">CounterCash</span>
+        </a>
+        <ul class="mt-4">
+            <li class="mb-1 group active">
+                <a href="#"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-home-2-line mr-3 text-lg"></i>
+                    <span class="text-sm">Dashboard</span>
+                </a>
+            </li>
+            <li class="mb-1 group">
+                <a href="#"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+                    <i class="ri-instance-line mr-3 text-lg"></i>
+                    <span class="text-sm">Menu</span>
+                    <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
+                </a>
+                <ul class="pl-7 mt-2 hidden group-[.selected]:block">
+                    <li class="mb-4">
+                        <a href="Jurnalumum.html"
+                            class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:content-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Journal
+                            Umum</a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="bukubesar.html"
+                            class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:content-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Transaksi
+                            </a>
+                    </li>
+
+                    <li class="mb-4">
+                        <a href="daftar.html"
+                            class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:content-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Daftar Hutang dan Piutang
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="mb-1 group">
+                <a href="#" id="logoutButton"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-logout-box-r-line mr-3 text-lg"></i>
+                    <span class="text-sm">Logout</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <main class="w-full md:w-[calc(100%-16rem)] md:ml-64 bg-gray-50 min-h-screen transition-all main">
+        <div
+            class="py-2 px-6 bg-white flex items-center justify-between shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+            <button type="button" class="text-lg text-gray-600 md:hidden sidebar-toggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <h1 class="text-lg font-bold text-gray-800">Dashboard</h1>
+            <div class="flex items-center"></div>
+        </div>
+
+               <!-- Chart Section -->
+               <div class="mt-8 flex flex-wrap justify-center items-center">
+                <!-- Pie Chart -->
+                <div class="bg-white shadow-xl rounded-lg p-8 m-4 chart-container" style="width: 30%; transition: transform 0.3s ease-in-out;">
+                    <h2 class="text-xl font-semibold mb-4 text-center">Grafik Keuangan</h2>
+                    <canvas id="pieChart" class="chart"></canvas>
+                </div>
+                <!-- end: Pie Chart -->
+    
+                <!-- Line Chart Section -->
+                <div class="bg-white shadow-xl rounded-lg p-8 m-4 chart-container" style="width: 45%; transition: transform 0.3s ease-in-out;">
+                    <h2 class="text-xl font-semibold mb-4 text-center">Grafik Keuangan</h2>
+                    <canvas id="dashboardChart"></canvas>
+                </div>
+            </div>
+            <!-- end: Chart Section -->
+        
+       
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+            <div
+                class="p-6 bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-lg rounded-lg flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold">Total Pemasukan</h3>
+                    <p id="totalIncome" class="text-3xl mt-2 font-bold">Rp 0</p>
+                </div>
+                <i class="ri-arrow-up-circle-fill text-4xl"></i>
+            </div>
+            <div
+                class="p-6 bg-gradient-to-r from-red-400 to-pink-500 text-white shadow-lg rounded-lg flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold">Total Pengeluaran</h3>
+                    <p id="totalExpense" class="text-3xl mt-2 font-bold">Rp 0</p>
+                </div>
+                <i class="ri-arrow-down-circle-fill text-4xl"></i>
+            </div>
+
+          <div class="p-6 bg-gradient-to-r from-green-400 to-pink-500 text-white shadow-lg rounded-lg flex items-center justify-between">
+    <div>
+        <h3 class="text-lg font-semibold">Total Saldo</h3>
+        <p id="totalBalance" class="text-3xl mt-2 font-bold">Rp 0</p>
+    </div>
+    <i class="ri-money-dollar-circle-fill text-4xl"></i>
+</div>
+
+
+        </div>
+
+
+
+        <div class="mt-8 bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-6">Transaksi Terbaru</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Tanggal</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Deskripsi</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Pemasukan</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Pengeluaran</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">Saldo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody" class="divide-y divide-gray-200">
+                        <!-- Rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="mt-8 bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-6">Hutang Lunas Terbaru</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Tanggal</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">Nama
+                            </th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Alamat</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">Nomor
+                                HP</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                Jumlah</th>
+                                <th class="py-3 px-4 border-b-2 border-gray-200 text-left text-gray-600 font-semibold">
+                                    Kategori</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lunasDebtList" class="divide-y divide-gray-200">
+                        <!-- Rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+    </main>
+    <!-- end: Main -->
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebarToggle = document.querySelector(".sidebar-toggle");
+            const sidebarMenu = document.querySelector(".sidebar-menu");
+            const sidebarOverlay = document.querySelector(".sidebar-overlay");
+
+            sidebarToggle.addEventListener("click", () => {
+                sidebarMenu.classList.toggle("active");
+                sidebarOverlay.classList.toggle("active");
+            });
+
+            sidebarOverlay.addEventListener("click", () => {
+                sidebarMenu.classList.remove("active");
+                sidebarOverlay.classList.remove("active");
+            });
+
+            // Add event listeners for dropdown toggles
+            const dropdownToggles = document.querySelectorAll('.sidebar-dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function () {
+                    this.classList.toggle('selected');
+                    const submenu = this.nextElementSibling;
+                    if (submenu) {
+                        submenu.classList.toggle('block');
+                        submenu.classList.toggle('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        // Retrieve data from localStorage
+        let ledger = JSON.parse(localStorage.getItem('ledger')) || [];
+        console.log('Retrieved ledger:', ledger);
+
+        // Prepare data for the chart
+        const labels = ledger.map(entry => new Date(entry.date).toLocaleDateString());
+        const incomeData = ledger.map(entry => entry.type === 'income' ? entry.credit : 0);
+        const expenseData = ledger.map(entry => entry.type === 'expense' ? entry.debit : 0);
+        const balanceData = ledger.map(entry => entry.balance);
+
+        // Log the prepared data to debug
+        console.log('Labels:', labels);
+        console.log('Income Data:', incomeData);
+        console.log('Expense Data:', expenseData);
+        console.log('Balance Data:', balanceData);
+
+       // Create the chart
+const ctx = document.getElementById('dashboardChart').getContext('2d');
+const dashboardChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+                label: 'Pemasukan',
+                data: incomeData,
+                borderColor: 'green',
+                backgroundColor: 'rgba(0, 128, 0, 0.2)', // Light green area fill
+                fill: true // Fill area under line
+            },
+            {
+                label: 'Pengeluaran',
+                data: expenseData,
+                borderColor: 'red',
+                backgroundColor: 'rgba(255, 0, 0, 0.2)', // Light red area fill
+                fill: true // Fill area under line
+            },
+          
+        ]
+    },
+    options: {
+    responsive: true,
+    title: {
+        display: true,
+        text: 'Grafik Keuangan'
+    },
+    tooltips: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+            label: function(tooltipItem, data) {
+                var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                return datasetLabel + ': ' + tooltipItem.yLabel.toFixed(2);
+            }
+        }
+    },
+    hover: {
+        mode: 'nearest',
+        intersect: true
+    },
+    scales: {
+        y: {
+            stacked: true, // Enable stacking
+            title: {
+                display: true,
+                text: 'Total'
+            }
+        },
+        x: {
+            stacked: true, // Enable stacking
+            title: {
+                display: true,
+                text: 'Tanggal'
+            }
+        }
+    }
+}
+
+});
+    </script>
+    <!-- hutang lunas -->
+    <script>
+        function loadLunasDebts() {
+            const lunasDebtList = document.getElementById('lunasDebtList');
+            const debts = JSON.parse(localStorage.getItem('debts')) || [];
+            lunasDebtList.innerHTML = '';
+
+            debts.forEach((debt) => {
+                if (debt.status === 'Lunas') {
+                    const row = document.createElement('tr');
+                    row.classList.add('border-b');
+                    row.innerHTML = `
+                <td class="py-2 px-4">${debt.date}</td>
+                <td class="py-2 px-4">${debt.name}</td>
+                <td class="py-2 px-4">${debt.address}</td>
+                <td class="py-2 px-4">${debt.phone}</td>
+                <td class="py-2 px-4">Rp ${debt.amount.toLocaleString()}</td>
+                <td class="py-2 px-4">${debt.category}</td>
+            `;
+                    lunasDebtList.appendChild(row);  
+                }
+            });
+
+            console.log('Data lunas:', debts.filter(debt => debt.status === 'Lunas')); // Debug log
+        }
+
+        window.onload = loadLunasDebts;
+    </script>
+    <!-- Transaksi Terbaru -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ledger = JSON.parse(localStorage.getItem('ledger')) || [];
+
+            let totalIncome = 0;
+            let totalExpense = 0;
+            let currentBalance = 0;
+
+            const transactionTableBody = document.getElementById('transactionTableBody');
+
+            ledger.forEach(entry => {
+                if (entry.type === 'income') {
+                    totalIncome += entry.credit;
+                } else if (entry.type === 'expense') {
+                    totalExpense += entry.debit;
+                }
+
+                // Hitung saldo pada setiap transaksi
+                currentBalance += entry.type === 'income' ? entry.credit : -entry.debit;
+
+                // Buat baris baru dalam tabel
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td class="py-2 px-4 border-b">${new Date(entry.date).toLocaleDateString()}</td>
+            <td class="py-2 px-4 border-b">${entry.description}</td>
+            <td class="py-2 px-4 border-b">${entry.type === 'income' ? entry.credit.toLocaleString() : ''}</td>
+            <td class="py-2 px-4 border-b">${entry.type === 'expense' ? entry.debit.toLocaleString() : ''}</td>
+            <td class="py-2 px-4 border-b">${currentBalance.toLocaleString()}</td> <!-- Menampilkan saldo -->
+        `;
+                transactionTableBody.appendChild(row);
+            });
+
+            // Update total pendapatan, pengeluaran, dan saldo di luar tabel
+            document.getElementById('totalIncome').textContent = `Rp ${totalIncome.toLocaleString()}`;
+            document.getElementById('totalExpense').textContent = `Rp ${totalExpense.toLocaleString()}`;
+            document.getElementById('totalBalance').textContent = `Rp ${currentBalance.toLocaleString()}`;
+
+        });
+    </script>
+
+    <!-- Logout -->
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('user'); // Misalkan 'user' adalah key untuk data pengguna yang tersimpan
+            window.location.href = 'login.html'; // Ganti 'login.html' dengan URL halaman login Anda
+        });
+    </script>
+
+<script>
+    // Generate Pie Chart for Financial Data
+    document.addEventListener('DOMContentLoaded', () => {
+        // Retrieve data from localStorage
+        let ledger = JSON.parse(localStorage.getItem('ledger')) || [];
+
+        let totalIncome = 0;
+        let totalExpense = 0;
+        let currentBalance = 0;
+
+        ledger.forEach(entry => {
+            if (entry.type === 'income') {
+                totalIncome += entry.credit;
+            } else if (entry.type === 'expense') {
+                totalExpense += entry.debit;
+            }
+
+            // Calculate balance for each transaction
+            currentBalance += entry.type === 'income' ? entry.credit : -entry.debit;
+        });
+
+        // Create Pie Chart
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Pemasukan', 'Total Pengeluaran', 'Total Saldo'],
+                datasets: [{
+                    data: [totalIncome, totalExpense, currentBalance],
+                    backgroundColor: ['#34d399', '#f87171', '#fbbf24'],
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Distribusi Keuangan'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const dataset = data.datasets[tooltipItem.datasetIndex];
+                            const currentValue = dataset.data[tooltipItem.index];
+                            return `${data.labels[tooltipItem.index]}: Rp ${currentValue.toLocaleString()}`;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update total income, expense, and balance outside the table
+        document.getElementById('totalIncome').textContent = `Rp ${totalIncome.toLocaleString()}`;
+        document.getElementById('totalExpense').textContent = `Rp ${totalExpense.toLocaleString()}`;
+        document.getElementById('totalBalance').textContent = `Rp ${currentBalance.toLocaleString()}`;
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+ // Retrieve data from localStorage
+        let ledger = JSON.parse(localStorage.getItem('ledger')) || [];
+        console.log('Retrieved ledger:', ledger);
+
+        // Prepare data for the chart
+        const labels = ledger.map(entry => new Date(entry.date).toLocaleDateString());
+        const incomeData = ledger.map(entry => entry.type === 'income' ? entry.credit : 0);
+        const expenseData = ledger.map(entry => entry.type === 'expense' ? entry.debit : 0);
+        const balanceData = ledger.map(entry => entry.balance);
+
+        // Log the prepared data to debug
+        console.log('Labels:', labels);
+        console.log('Income Data:', incomeData);
+        console.log('Expense Data:', expenseData);
+        console.log('Balance Data:', balanceData);
+
+       // Create the chart
+const ctx = document.getElementById('dashboardChart').getContext('2d');
+const dashboardChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+                label: 'Pemasukan',
+                data: incomeData,
+                borderColor: 'green',
+                backgroundColor: 'rgba(0, 128, 0, 0.2)', // Light green area fill
+                fill: true // Fill area under line
+            },
+            {
+                label: 'Pengeluaran',
+                data: expenseData,
+                borderColor: 'red',
+                backgroundColor: 'rgba(255, 0, 0, 0.2)', // Light red area fill
+                fill: true // Fill area under line
+            },
+            {
+                label: 'Saldo',
+                data: balanceData,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)', // Light blue area fill
+                fill: true // Fill area under line
+            }
+        ]
+    },
+    options: {
+    responsive: true,
+    title: {
+        display: true,
+        text: 'Grafik Keuangan'
+    },
+    tooltips: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+            label: function(tooltipItem, data) {
+                var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                return datasetLabel + ': ' + tooltipItem.yLabel.toFixed(2);
+            }
+        }
+    },
+    hover: {
+        mode: 'nearest',
+        intersect: true
+    },
+    scales: {
+        y: {
+            stacked: true, // Enable stacking
+            title: {
+                display: true,
+                text: 'Total'
+            }
+        },
+        x: {
+            stacked: true, // Enable stacking
+            title: {
+                display: true,
+                text: 'Tanggal'
+            }
+        }
+    }
+}
+
+});
+
+    </script>
+
+
+
+
+    Chart Ke 2 yang salah 
+
+
+
+    
+
+     // Retrieve data from localStorage
+        let ledger = JSON.parse(localStorage.getItem('ledger')) || [];
+        console.log('Retrieved ledger:', ledger);
+
+        // Prepare data for the chart
+        const labels = ledger.map(entry => new Date(entry.date).toLocaleDateString());
+        const incomeData = ledger.map(entry => entry.type === 'income' ? entry.credit : 0);
+        const expenseData = ledger.map(entry => entry.type === 'expense' ? entry.debit : 0);
+        const balanceData = ledger.map(entry => entry.balance);
+
+        // Log the prepared data to debug
+        console.log('Labels:', labels);
+        console.log('Income Data:', incomeData);
+        console.log('Expense Data:', expenseData);
+        console.log('Balance Data:', balanceData);
+
+        // Create the chart
+        const ctx = document.getElementById('dashboardChart').getContext('2d');
+        const dashboardChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                        label: 'Pemasukan',
+                        data: incomeData,
+                        borderColor: 'green',
+                        fill: false
+                    },
+                    {
+                        label: 'Pengeluaran',
+                        data: expenseData,
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'Saldo',
+                        data: balanceData,
+                        borderColor: 'blue',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Grafik Keuangan'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+            }
+        });
